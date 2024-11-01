@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur de Liens en Markdown</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <nav>
+        <a href="index.html" id="link-index">Accueil</a>
+        <a href="vidhide-renamer.html" id="link-renamer">Renommer des fichiers</a>
+        <a href="convertisseur-streaming-markdown.html" id="link-markdown" class="active">Convertisseur Markdown</a>
+    </nav>        
+
+    <div class="container">
+        <h2>Convertisseur de Liens en Markdown</h2>
+        <form id="convertForm">
+            <label for="inputText">Collez vos liens ici :</label>
+            <textarea id="inputText" placeholder="Collez vos liens ici..."></textarea>
+
+            <button type="button" onclick="convertToMarkdown()">Convertir en Markdown</button>
+            <button type="button" id="copyButton" class="hidden" onclick="copyToClipboard()">Copier le Markdown</button>
+        </form>
+        
+        <div id="output" class="results">Le code Markdown généré apparaîtra ici</div>
+    </div>
+
+    <script>
+        const currentPage = window.location.pathname.split('/').pop();
+        const activeLink = document.getElementById(`link-${currentPage.split('.')[0]}`);
+        if (activeLink) activeLink.classList.add("active");
+
+        function decodeHTMLEntities(text) {
+            const entities = {
+                '&#40;': '(',
+                '&#41;': ')',
+                '&#39;': "'"
+            };
+            return text.replace(/&#40;|&#41;|&#39;/g, match => entities[match]);
+        }
+
+        function convertToMarkdown() {
+            const input = document.getElementById('inputText').value;
+            const lines = input.split('\n');
+            let markdown = '';
+            let currentSeason = '';
+            let seriesTitle = '';
+
+            lines.forEach(line => {
+                const [url, ...titleParts] = line.split(/\s+/);
+                const title = decodeHTMLEntities(titleParts.join(' '));
+
+                const match = title.match(/(.+?)\sS(\d{2})E\d{2}/);
+                if (match) {
+                    const name = match[1];
+                    const seasonNumber = match[2];
+
+                    if (!seriesTitle) {
+                        seriesTitle = name;
+                        markdown += `# ${seriesTitle}\n\n`;
+                    }
+
+                    if (seasonNumber !== currentSeason) {
+                        if (currentSeason !== '') markdown += '\n';
+                        currentSeason = seasonNumber;
+                        markdown += `## Saison ${parseInt(currentSeason, 10)}\n`;
+                    }
+
+                    if (url && title) {
+                        markdown += `- [${title}](${url})\n`;
+                    }
+                }
+            });
+
+            const outputDiv = document.getElementById('output');
+            outputDiv.textContent = markdown;
+
+            const copyButton = document.getElementById('copyButton');
+            if (markdown.trim() !== '') {
+                copyButton.classList.remove('hidden');
+            } else {
+                copyButton.classList.add('hidden');
+            }
+        }
+
+        function copyToClipboard() {
+            const outputDiv = document.getElementById('output');
+            const text = outputDiv.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Markdown copié dans le presse-papier !');
+            }).catch(err => {
+                console.error('Erreur de copie', err);
+            });
+        }
+    </script>
+</body>
+</html>

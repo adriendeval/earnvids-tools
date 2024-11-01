@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Outils VidHide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+    <nav>
+        <a href="index.html" id="link-index" class="active">Accueil</a>
+        <a href="vidhide-renamer.html" id="link-renamer">Renommer des fichiers</a>
+        <a href="convertisseur-streaming-markdown.html" id="link-markdown">Convertisseur Markdown</a>
+    </nav>       
+
+    <div class="container">
+        <h1>Bienvenue sur les Outils VidHide</h1>
+        <p>Utilisez les outils ci-dessous pour gérer et convertir vos liens et fichiers facilement.</p>
+        <a href="vidhide-renamer.html" class="btn">Renommer des fichiers VidHide</a>
+        <a href="convertisseur-streaming-markdown.html" class="btn">Convertisseur de liens en Markdown</a>
+    </div>
+
+    <script>
+        // Détecte la page actuelle pour souligner le lien actif
+        const currentPage = window.location.pathname.split('/').pop();
+        const activeLink = document.getElementById(`link-${currentPage.split('.')[0]}`);
+        if (activeLink) activeLink.classList.add("active");
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+/* Styles pour le thème sombre */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Conteneur central pour chaque page */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+/* Titres principaux */
+h1, h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Paragraphe descriptif */
+p {
+    color: #b3b3b3;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Menu de navigation */
+nav {
+    background-color: #1e1e1e;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+nav a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+nav a:last-child {
+    margin-right: 0;
+}
+
+/* Soulignement du lien actif */
+nav a.active {
+    text-decoration: underline;
+}
+
+/* Champs de saisie et zones de texte */
+input, textarea, button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+/* Zone de texte spécifique */
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: monospace;
+}
+
+/* Boutons */
+button, .btn {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+button:hover, .btn:hover {
+    background-color: #45a049;
+}
+
+/* Conteneur pour les résultats */
+.results, .output {
+    margin-top: 20px;
+    background-color: #222;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    color: #e0e0e0;
+    white-space: pre-wrap;
+}
+
+/* Messages de succès et d'erreur */
+.success {
+    color: #4CAF50;
+}
+
+.error {
+    color: #f44336;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Style pour le lien actif */
+nav a.active {
+    text-decoration: underline;
+}
