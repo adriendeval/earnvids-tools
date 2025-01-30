@@ -1,4 +1,4 @@
 # VidHide Tools
 ### Outils pratiques pour VidHide
 
-Site : [tools.freeflix-streaming.fr](https://tools.freeflix-streaming.fr)
+Site : [adriendeval.github.io/vidhide-tools](https://adriendeval.github.io/vidhide-tools/)
