@@ -1,4 +1,4 @@
-# VidHide Tools
-### Outils pratiques pour VidHide
+# EarnVids Tools
+### Outils pratiques pour EarnVids
 
-Site : [adriendeval.github.io/vidhide-tools](https://adriendeval.github.io/vidhide-tools/)
+Site : [adriendeval.github.io/vidhide-tools](https://adriendeval.github.io/earnvide-tools/)
