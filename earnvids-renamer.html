@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renommer des fichiers EarnVids</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <nav>
+        <a href="index.html" id="link-index">Accueil</a>
+        <a href="earnvids-renamer.html" id="link-renamer" class="active">Renommer des fichiers</a>
+        <a href="convertisseur-streaming-markdown.html" id="link-markdown">Convertisseur Markdown</a>
+    </nav>       
+
+    <div class="container">
+        <h2>Renommer des fichiers EarnVids</h2>
+        <form id="renameForm">
+            <label for="api_key">Clé API :</label>
+            <input type="text" id="api_key" placeholder="Entre ta clé API EarnVids ici" required>
+
+            <label for="file_list">Liste des fichiers :</label>
+            <textarea id="file_list" placeholder="Colle ici ta liste de fichiers avec les titres au format EarnVids" required></textarea>
+
+            <button type="button" onclick="renameFiles()">Renommer les fichiers</button>
+        </form>
+        <div class="results" id="results">Statut du renommage affiché ici</div>
+    </div>
+
+    <script>
+        // Code pour souligner le lien actif via la classe CSS "active" (assurez-vous d'avoir ajouté cette classe dans le fichier style.css)
+        const currentPage = window.location.pathname.split('/').pop();
+        const activeLink = document.getElementById(`link-${currentPage.split('.')[0]}`);
+        if (activeLink) activeLink.classList.add("active");
+    
+        // Fonction de renommage des fichiers EarnVids avec prise en charge des caractères spéciaux
+        function setApiKeyCookie(apiKey) {
+            document.cookie = `apiKey=${apiKey}; path=/; max-age=${60 * 60 * 24 * 30}; secure`;
+        }
+    
+        function getApiKeyCookie() {
+            const match = document.cookie.match(/(^| )apiKey=([^;]+)/);
+            return match ? match[2] : '';
+        }
+    
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedApiKey = getApiKeyCookie();
+            if (savedApiKey) {
+                document.getElementById("api_key").value = savedApiKey;
+            }
+        });
+    
+        async function renameFiles() {
+            const apiKey = document.getElementById('api_key').value;
+            const fileList = document.getElementById('file_list').value;
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+    
+            setApiKeyCookie(apiKey);
+    
+            const fileLines = fileList.trim().split('\n');
+            for (let i = 0; i < fileLines.length; i++) {
+                const line = fileLines[i].trim();
+                const [fileURL, fileName] = line.split('\t');
+                const fileCode = fileURL.split('/').pop();
+    
+                // Expression régulière pour prendre en compte les caractères spéciaux que tu as mentionnés
+                const match = fileName.match(/(.+?)\sS(\d{2})E(\d{2})/);
+                if (!match) {
+                    resultsContainer.innerHTML += `<p class="error">Format invalide pour le fichier ${fileURL}</p>`;
+                    continue;
+                }
+    
+                // Prendre en charge les caractères spéciaux dans le titre du fichier
+                const showName = match[1].trim().replace(/[\(\)\:\-\'\&]/g, '');
+                const season = String(match[2]).padStart(2, '0');
+                const episode = String(match[3]).padStart(2, '0');
+                const newTitle = `${showName} S${season}E${episode}`;
+    
+                try {
+                    const response = await fetch(`https://earnvids.com/api/file/edit?key=${apiKey}&file_code=${fileCode}&file_title=${encodeURIComponent(newTitle)}`);
+                    const result = await response.json();
+                    
+                    if (result.status === 200) {
+                        resultsContainer.innerHTML += `<p class="success">Fichier ${fileCode} renommé en ${newTitle}</p>`;
+                    } else {
+                        resultsContainer.innerHTML += `<p class="error">Échec du renommage pour le fichier ${fileCode}</p>`;
+                    }
+                } catch (error) {
+                    resultsContainer.innerHTML += `<p class="error">Erreur de connexion pour le fichier ${fileCode}</p>`;
+                }
+            }
+        }
+    </script>    
+
+</body>
+</html>
